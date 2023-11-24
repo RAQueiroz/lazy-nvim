@@ -5,77 +5,40 @@
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-  -- disable trouble
   { "akinsho/bufferline.nvim", enabled = false },
-
-  -- add symbols-outline
   {
     "simrat39/symbols-outline.nvim",
     cmd = "SymbolsOutline",
     keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
     config = true,
   },
-
   {
     "nvim-focus/focus.nvim",
     version = "*",
     config = function()
-      require("focus").setup()
+      require("focus").setup({ autoresize = { minwidth = 1, minheight = 1 } })
     end,
   },
-  -- {
-  --   "echasnovski/mini.animate",
-  --   enabled = false,
-  -- },
-  -- Use <tab> for completion and snippets (supertab)
-  -- first: disable default <tab> and <s-tab> behavior in LuaSnip
-  -- {
-  --   "L3MON4D3/LuaSnip",
-  --   keys = function()
-  --     return {}
-  --   end,
-  -- },
-  -- then: setup supertab in cmp
-  -- {
-  --   "hrsh7th/nvim-cmp",
-  --   dependencies = {
-  --     "hrsh7th/cmp-emoji",
-  --   },
-  --   ---@param opts cmp.ConfigSchema
-  --   opts = function(_, opts)
-  --     local has_words_before = function()
-  --       unpack = unpack or table.unpack
-  --       local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  --       return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-  --     end
-  --
-  --     local luasnip = require("luasnip")
-  --     local cmp = require("cmp")
-  --
-  --     opts.mapping = vim.tbl_extend("force", opts.mapping, {
-  --       ["<Tab>"] = cmp.mapping(function(fallback)
-  --         if cmp.visible() then
-  --           cmp.select_next_item()
-  --           -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-  --           -- this way you will only jump inside the snippet region
-  --         elseif luasnip.expand_or_jumpable() then
-  --           luasnip.expand_or_jump()
-  --         elseif has_words_before() then
-  --           cmp.complete()
-  --         else
-  --           fallback()
-  --         end
-  --       end, { "i", "s" }),
-  --       ["<S-Tab>"] = cmp.mapping(function(fallback)
-  --         if cmp.visible() then
-  --           cmp.select_prev_item()
-  --         elseif luasnip.jumpable(-1) then
-  --           luasnip.jump(-1)
-  --         else
-  --           fallback()
-  --         end
-  --       end, { "i", "s" }),
-  --     })
-  --   end,
-  -- },
+  {
+    "https://codeberg.org/esensar/nvim-dev-container",
+    config = function()
+      require("devcontainer").setup({})
+    end,
+  },
+  {
+    "mfussenegger/nvim-dap",
+    optional = true,
+    dependencies = {
+      "mfussenegger/nvim-dap-python",
+    -- stylua: ignore
+    keys = {
+      { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method" },
+      { "<leader>dPc", function() require('dap-python').test_class() end, desc = "Debug Class" },
+    },
+      config = function()
+        local path = require("mason-registry").get_package("debugpy"):get_install_path()
+        require("dap-python").setup(path .. "/venv/bin/python")
+      end,
+    },
+  },
 }
