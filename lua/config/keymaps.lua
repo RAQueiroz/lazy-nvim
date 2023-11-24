@@ -5,3 +5,10 @@ vim.keymap.set("n", "<C-h>", "<cmd>FocusSplitLeft<CR>", { noremap = true, silent
 vim.keymap.set("n", "<C-l>", "<cmd>FocusSplitRight<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-j>", "<cmd>FocusSplitDown<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-k>", "<cmd>FocusSplitUp<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "∆", "<cmd>m .+1<cr>==", { desc = "Move down" })
+vim.keymap.set("n", "˚", "<cmd>m .-2<cr>==", { desc = "Move up" })
+vim.keymap.set("i", "∆", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
+vim.keymap.set("i", "˚", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
+vim.keymap.set("v", "∆", ":m '>+1<cr>gv=gv", { desc = "Move down" })
+vim.keymap.set("v", "˚", ":m '<-2<cr>gv=gv", { desc = "Move up" })
